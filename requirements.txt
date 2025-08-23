@@ -1,0 +1,21 @@
+# Core LangChain packages
+langchain
+langchain-groq
+langchain-community
+
+# Database and SQL
+sqlalchemy
+pymysql
+
+# Environment and configuration
+python-dotenv
+
+# Data manipulation and analysis
+pandas
+matplotlib
+numpy
+plotly
+
+# Optional: For development and testing
+# pytest  # Uncomment if you want to add testing
+# jupyter  # Uncomment if you want to use Jupyter notebooks
