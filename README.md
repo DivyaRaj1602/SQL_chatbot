@@ -1,46 +1,72 @@
 # Simple SQL Pipeline – Step 1: Single Table Queries
 
-## 📌 Objective  
-The goal of this project is to build a **natural language to SQL pipeline** that allows users to ask questions about their database in plain English and get relevant answers — without writing any SQL themselves.  
-This version focuses on **basic single-table queries**, making it a simple and practical starting point for learning, prototyping, and interviews.
+##📌 Objective
 
+The goal of this project is to build an AI-powered SQL chatbot that allows users to query their database in natural language and instantly get both tabular results and interactive visualizations — without needing SQL or BI expertise.
+This advanced version supports multi-table queries, automatic schema handling, and PowerBI-style dashboards.
+
+✨ What It Can Do (Current Capabilities)
+🔹 Natural Language → SQL
+Converts plain-English questions into optimized MySQL queries using an LLM.
+Supports multi-table joins, aggregations, CTEs, window functions, and date operations.
+Schema-aware: Reads tables, columns, and relationships dynamically to improve accuracy.
+Error handling: Auto-corrects invalid queries with retry logic.
+
+🔹 Safe Query Execution
+Only executes SELECT or WITH queries.
+Blocks destructive SQL (DROP, DELETE, INSERT, UPDATE).
+Validates queries before execution.
+
+🔹 Interactive Data Visualizations
+Generates charts directly from query results.
+Supported commands:
+auto → Let AI choose best chart
+options → Show all chart types
+pie category → Pie chart by category
+histogram price → Distribution of numeric column
+scatter x y → Correlation between two metrics
+bar category → Bar chart by category
+line date sales → Trends over time
+box column → Distribution & outliers
+heatmap → Correlation matrix
+dashboard → Auto-generated multi-chart dashboard (PowerBI-style)
+3d col1 col2 col3 → 3D scatter visualization
+
+🔹 CLI Interaction
+Conversational interface for asking questions.
+Commands:
+exit → Quit the program.
+schema → Show tables & columns.
+Visualization commands (listed above).
+Prints both executed SQL and query results. 
 ---
 
-## ✨ What It Can Do (Current Capabilities)  
-- **Natural Language to SQL**: Converts plain-English questions into SQL queries using a Large Language Model (LLM).  
-- **Table Identification**: Automatically detects which table the question refers to.  
-- **Schema Awareness**: Reads the database schema (tables and columns) to improve query accuracy.  
-- **Safe SQL Execution**:  
-  - Allows only `SELECT` queries.  
-  - Blocks dangerous operations like `DROP`, `DELETE`, `INSERT`, `UPDATE`, etc.  
-  - Validates query syntax before execution.  
-- **Result Display**: Presents query results in a clean tabular format with row count.  
-- **Interactive CLI**:  
-  - `exit` → Quit the program.  
-  - `schema` → Show the available tables and columns.  
+##🛠 Steps Taken to Ensure Reliability
 
----
+1.Strict Query Safety Checks
+Executes only SELECT and WITH queries.
+Blocks destructive SQL (DROP, DELETE, INSERT, UPDATE, ALTER).
+Ensures SQL always starts with SELECT or WITH.
 
-## 🛠 Steps Taken to Ensure Reliability  
-1. **Strict Query Safety Checks**  
-   - Only runs `SELECT` queries.  
-   - Detects and blocks harmful SQL commands.  
-   - Checks for unbalanced quotes and parentheses.  
+2.Dynamic Schema Awareness
+Automatically inspects database schema (tables, columns, relationships).
+Provides this schema context to the LLM for accurate query generation.
+Supports multi-table joins by leveraging schema information.
 
-2. **Schema-Aware Querying**  
-   - Reads database schema at startup.  
-   - Provides table and column context to the LLM for accurate query generation.  
+3.Multi-Stage SQL Cleaning & Normalization
+Extracts only the SQL query from raw LLM output.
+Cleans extra text, explanations, or invalid tokens.
+Normalizes column/table references and fixes formatting issues.
 
-3. **Multi-Stage SQL Cleaning**  
-   - Removes unwanted explanations from LLM output.  
-   - Extracts only the SQL portion.  
-   - Fixes formatting and quote issues.  
+4.Pre-Execution Validation
+Runs EXPLAIN to validate query syntax and execution plan.
+Applies retry logic with schema hints if query fails.
+Rejects unsafe or ambiguous queries.
 
-4. **Syntax Validation Before Execution**  
-   - Uses `EXPLAIN` to verify SQL validity before running the actual query.  
-
-5. **Clear Error Handling**  
-   - Returns structured error messages for easier debugging.  
+5.Robust Error Handling & Feedback
+Provides structured, human-readable error messages.
+Suggests corrections (e.g., missing joins, invalid columns).
+Prevents pipeline crashes with graceful fallbacks. 
 
 ---
 
